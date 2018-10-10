@@ -1,0 +1,39 @@
+.second,
+.third {
+  position: relative;
+  display: block;
+  animation: slide-from-right 0.8s ease both;
+}
+
+.slide-from-right {
+  position: relative;
+  display: block;
+  animation: slide-from-right 0.8s ease both;
+}
+.slide-from-left {
+  position: relative;
+  display: block;
+  animation: slide-from-left 0.6s ease both;
+}
+
+.hide {
+  display: none;
+}
+
+@keyframes slide-from-right {
+  from {
+    right: -500px;
+  }
+  to {
+    right: 0px;
+  }
+}
+
+@keyframes slide-from-left {
+  from {
+    left: -500px;
+  }
+  to {
+    left: 0px;
+  }
+}
