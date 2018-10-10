@@ -1,49 +1,63 @@
-const next = document.querySelector('#next');
-const back = document.querySelector('#back');
+const emailInput = document.querySelector('.email');
+const passwordInput = document.querySelector('.password');
+const passwordConfirmationInput = document.querySelector('.passwordConfirmation');
+const signUpForm = document.querySelector('form');
+const responseArea = document.querySelector('.response-area');
 
-const first = document.querySelector('#first');
-const second = document.querySelector('#second');
-const third = document.querySelector('#third');
-// const fixed = document.querySelector('#fixed');
-const finish = document.querySelector('#finish');
+const host = 'http://127.0.0.1:5500';
 
-let current = 1;
-back.classList.add('hide');
-const goToNext = () => {
-  if (current < 3) {
-    if (current === 1) {
-      first.classList.add('hide');
-      back.classList.remove('hide');
-      second.classList.remove('hide');
-    }
-    if (current === 2) {
-      second.classList.add('hide');
-      third.classList.remove('hide');
-      next.classList.add('hide');
-      finish.classList.remove('hide');
-    }
-    current += 1;
-  }
-};
+signUpForm.addEventListener('submit', (e) => {
+  e.preventDefault();
 
-const goToPrevious = () => {
-  if (current > 1) {
-    if (current === 3) {
-      finish.classList.add('hide');
-      next.classList.remove('hide');
-      second.classList.remove('hide');
-      second.classList.add('slide-from-left');
-      third.classList.add('hide');
-    }
-    if (current === 2) {
-      second.classList.add('hide');
-      back.classList.add('hide');
-      first.classList.remove('hide');
-      first.classList.add('slide-from-left');
-    }
-    current -= 1;
-  }
-};
+  const email = emailInput.value;
+  const password = passwordInput.value;
+  const passwordConfirmation = passwordConfirmationInput.value;
 
-next.addEventListener('click', goToNext);
-back.addEventListener('click', goToPrevious);
+  const signUpParams = {
+    email,
+    password,
+    passwordConfirmation,
+  };
+  // alert(signUpParams);
+  console.log(signUpParams);
+  const signinUrl = 'http://localhost:4200/api/v1/users/signup-1';
+
+  fetch(signinUrl, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json, text/plain, */*',
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json;charset=UTF-8',
+    },
+    body: JSON.stringify(signUpParams),
+  })
+    .then(res => res.json())
+    .then((data) => {
+      console.log(data);
+      if (data.errors) {
+        const { errors } = data;
+        let errorMsg = '';
+        errors.forEach((err) => {
+          errorMsg += `<li class='text-left'>${err.msg}</li>`;
+          // console.log(msg.msg);
+        });
+        return (responseArea.innerHTML = `<span class="text-danger">${errorMsg}</span>`);
+      }
+      localStorage.setItem('userToken', data.userToken);
+      responseArea.innerHTML = data.success_msg || `<span class="text-success">${data.success_msg}</span>`;
+      setInterval(() => {
+        window.location.href = `${host}/ui/set-up-profile.html`;
+      }, 1000);
+    })
+    .catch(
+      error => (responseArea.innerHTML = '<span class="text-danger">A connection error occurred, try again latter</span>'),
+    );
+});
+
+const userToken = localStorage.getItem('userToken');
+if (userToken) {
+  responseArea.innerHTML = '<span class="text-success">You already have an account, complete your profile</span>';
+  setInterval(() => {
+    window.location.href = `${host}/ui/set-up-profile.html`;
+  }, 1000);
+}
