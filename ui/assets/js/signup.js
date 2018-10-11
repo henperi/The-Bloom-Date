@@ -6,7 +6,7 @@ const loader = document.querySelector('.loader');
 const signUpForm = document.querySelector('form');
 const responseArea = document.querySelector('.response-area');
 
-const host = 'http://127.0.0.1:5500';
+const host = 'http://127.0.0.1';
 
 emailInput.addEventListener('keypress', () => {
   responseArea.innerHTML = '';
