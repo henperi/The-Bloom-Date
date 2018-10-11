@@ -82,7 +82,7 @@ signUpForm.addEventListener('submit', (e) => {
       localStorage.setItem('userToken', data.userToken);
       responseArea.innerHTML = data.success_msg || `<span class="text-success">${data.success_msg}</span>`;
       setInterval(() => {
-        window.location.href = `${host}/ui/set-up-profile.html`;
+        window.location.href = 'set-up-profile.html';
       }, 1000);
     })
     .catch((error) => {
@@ -96,6 +96,6 @@ if (userToken) {
   loader.classList.remove('hide');
   responseArea.innerHTML = '<span class="list-group-item text-success">You already have an account, continue to your profile section</span>';
   setInterval(() => {
-    window.location.href = `${host}/ui/set-up-profile.html`;
+    window.location.href = 'set-up-profile.html';
   }, 2000);
 }

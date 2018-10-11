@@ -22,11 +22,11 @@ const userToken = localStorage.getItem('userToken');
 if (!userToken) {
   responseArea.innerHTML = '<span class="list-group-item text-danger">You can\'t access this page</span>';
   setInterval(() => {
-    window.location.href = `${host}/ui/sign-up.html`;
+    window.location.href = 'sign-up.html';
   }, 200);
 }
 
-if(userToken) {
+if (userToken) {
   countryInput.addEventListener('change', () => {
     responseArea.innerHTML = '';
   });
@@ -36,15 +36,16 @@ if(userToken) {
   tribeInput.addEventListener('change', () => {
     responseArea.innerHTML = '';
   });
-  
+
   const next = document.querySelector('#next');
   const back = document.querySelector('#back');
-  
+
   const first = document.querySelector('#first');
   const second = document.querySelector('#second');
   const third = document.querySelector('#third');
   const finish = document.querySelector('#finish');
-  
+
+
   let current = 1;
   back.classList.add('hide');
   
@@ -174,7 +175,7 @@ if(userToken) {
         // localStorage.setItem('userToken', data.userToken);
         responseArea.innerHTML = data.success_msg || `<span class="text-success">${data.success_msg}</span>`;
         setInterval(() => {
-          window.location.href = `${host}/ui/home.html`;
+          window.location.href = 'home.html';
         }, 1000);
       })
       .catch((error) => {
