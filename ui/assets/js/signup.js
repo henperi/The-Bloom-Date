@@ -56,7 +56,7 @@ signUpForm.addEventListener('submit', (e) => {
     password,
     passwordConfirmation,
   };
-  const signinUrl = 'http://localhost:4200/api/v1/users/signup-1';
+  const signinUrl = 'http://https://bloom-date.herokuapp.com/api/v1/users/signup-1';
 
   fetch(signinUrl, {
     method: 'POST',
