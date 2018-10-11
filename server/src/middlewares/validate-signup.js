@@ -6,7 +6,7 @@ const validateSignup = {
     req.checkBody('email', 'Email is required').notEmpty();
     req.checkBody('email', 'Email is not valid').isEmail();
     req.checkBody('password', 'Password is required').notEmpty();
-    req.checkBody('password_confirmation', 'Passwords do not match').equals(req.body.password);
+    req.checkBody('passwordConfirmation', 'Passwords do not match').equals(req.body.password);
 
     const errors = req.validationErrors();
     if (errors) {
@@ -25,7 +25,7 @@ const validateSignup = {
     req.checkBody('gender', 'Your gender is required').notEmpty();
     req.checkBody('residence', 'Your residence is required').notEmpty();
     req.checkBody('heardFrom', 'Please tell us how you got to know about us').notEmpty();
-
+    console.log(req.body);
     let errors = req.validationErrors();
     if (errors) {
       return res.status(400).json({ success: false, errors });

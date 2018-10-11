@@ -17,6 +17,7 @@ class User {
       const { rows } = await this.users.query(queryText, [email]);
       return rows[0];
     } catch (err) {
+      console.log(err);
       return res.status(500).json({
         success: false,
         errors: [{ msg: 'An error occured, while processing this request, try again in a moment' }],

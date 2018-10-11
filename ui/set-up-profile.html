@@ -109,56 +109,54 @@
 
 							<form action="javascript:;" class="form-1" method="POST">
 								<div class="first second" id="first">
-									<h2>First</h1>
-
-										<div class="input-group u-rounded-50 border u-of-hidden u-mb-20">
-											<select class="form-control border-0 p-3x">
-												<option value="">Choose Your Country</option>
-												<option>Nigeria</option>
-												<option>Ghana</option>
-												<option>South Africa</option>
-											</select>
-										</div>
-
-										<div class="input-group u-rounded-50 border u-of-hidden u-mb-20">
-											<select class="form-control border-0 p-3x">
-												<option value="">Choose Your State</option>
-												<option>Bayelsa</option>
-												<option>Delta</option>
-												<option>Lagos</option>
-											</select>
-										</div>
-
-										<div class="input-group u-rounded-50 border u-of-hidden u-mb-20">
-											<select class="form-control border-0 p-3x">
-												<option value="">Choose Your Tribe</option>
-												<option>Ijaw</option>
-												<option>Yoruba</option>
-												<option>Hausa</option>
-												<option>Fulani</option>
-											</select>
-										</div>
-								</div>
-
-								<div class="second hide" id="second">
-									<h2>Second</h2>
-									<div class="input-group u-rounded-50 border u-of-hidden u-mb-20">
-										<!-- <div class="input-group-addon bg-white border-0 pl-4 pr-0">
-												<span class="icon icon-User text-primary"></span>
-											</div> -->
-										<input type="text" class="form-control border-0 p-2" placeholder="Your full name">
-									</div>
 
 									<div class="input-group u-rounded-50 border u-of-hidden u-mb-20">
-										<select class="form-control border-0 p-2x">
-											<option value="">Choose Your Gender</option>
-											<option>Male</option>
-											<option>Female</option>
+										<select class="country form-control border-0 p-3x">
+											<option value="">Choose Your Country</option>
+											<option>Nigeria</option>
+											<option>Ghana</option>
+											<option>South Africa</option>
 										</select>
 									</div>
 
 									<div class="input-group u-rounded-50 border u-of-hidden u-mb-20">
-										<select class="form-control border-0 p-2x">
+										<select class="state form-control border-0 p-3x">
+											<option value="">Choose Your State</option>
+											<option value="Bayelsa">Bayelsa</option>
+											<option value="Delta">Delta</option>
+											<option value="Lagos">Lagos</option>
+										</select>
+									</div>
+
+									<div class="input-group u-rounded-50 border u-of-hidden u-mb-20">
+										<select class="tribe form-control border-0 p-3x">
+											<option value="">Choose Your Tribe</option>
+											<option value="Ijaw">Ijaw</option>
+											<option value="Yoruba">Yoruba</option>
+											<option value="Hausa">Hausa</option>
+											<option value="Fulani">Fulani</option>
+										</select>
+									</div>
+								</div>
+
+								<div class="second hide" id="second">
+									<div class="input-group u-rounded-50 border u-of-hidden u-mb-20">
+										<!-- <div class="input-group-addon bg-white border-0 pl-4 pr-0">
+												<span class="icon icon-User text-primary"></span>
+											</div> -->
+										<input type="text" class="fullname form-control border-0 p-2" placeholder="Your full name">
+									</div>
+
+									<div class="input-group u-rounded-50 border u-of-hidden u-mb-20">
+										<select class="gender form-control border-0 p-2x">
+											<option value="">Choose Your Gender</option>
+											<option value="0">Female</option>
+											<option value="1">Male</option>
+										</select>
+									</div>
+
+									<div class="input-group u-rounded-50 border u-of-hidden u-mb-20">
+										<select class="residence form-control border-0 p-2x">
 											<option value="">Choose Your State of Residence</option>
 											<option>Bayelsa</option>
 											<option>Lagos</option>
@@ -170,23 +168,25 @@
 								</div>
 
 								<div class="third hide" id="third">
-									<h2>Third</h2>
 									<h3>How did you hear about The Bloom Date</h3>
-
 									<label class="col-12 custom-control custom-checkbox text-left">
-										<input type="checkbox" class="custom-control-input">
+										<input type="checkbox" value="Facebook" class="facebook custom-control-input">
 										<span class="custom-control-indicator mt-2"></span>
 										<a class="btn btn-block  btn-outline-primary btn-rounded custom-control-description">Facebook</a>
 									</label>
 									<label class="col-12 custom-control custom-checkbox text-left">
-										<input type="checkbox" class="custom-control-input">
+										<input type="checkbox" value="Instagram" class="instagram custom-control-input">
 										<span class="custom-control-indicator mt-2"></span>
 										<a class="btn btn-block btn-outline-primary btn-rounded custom-control-description">Instagram</a>
 									</label>
 									<label class="col-12 custom-control custom-checkbox text-left">
-										<input type="checkbox" class="custom-control-input">
+										<input type="checkbox" value="Whatsapp" class="whatsapp custom-control-input">
 										<span class="custom-control-indicator mt-2"></span>
 										<a class="btn btn-block  btn-outline-primary btn-rounded custom-control-description">Whatsapp</a>
+									</label>
+									<h4>Other</h4>
+									<label class="col-12 custom-control custom-checkboxX text-left">
+										<input type="text" class="other form-control u-rounded-50 p-2" value="" placeholder="If other please state">
 									</label>
 
 									<div class="text-left u-mt-20">
@@ -199,11 +199,16 @@
 									</div>
 
 								</div>
+								<span class="h4 hide loader">
+									<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+								</span>
+								<div class="response-area"></div>
+
 								<div class="fixed">
-									<button id="back" class="btn btn-sm btn-primary btn-rounded u-mt-20 u-w-120">
+									<button id="back" type="button" class="btn btn-sm btn-primary btn-rounded u-mt-20 u-w-120">
 										Back
 									</button>
-									<button id="next" class="btn btn-sm btn-primary btn-rounded u-mt-20 u-w-120">
+									<button id="next" type="button" class="btn btn-sm btn-primary btn-rounded u-mt-20 u-w-120">
 										Next
 									</button>
 									<button id="finish" class="hide btn btn-sm btn-primary btn-rounded u-mt-20 u-w-120">
@@ -258,7 +263,7 @@
 
 	<script src="assets/js/bundle.js"></script>
 	<script src="assets/js/fury.js"></script>
-	<script src="assets/js/isAuthenticated.js"></script>
+	<!-- <script src="assets/js/isAuthenticated.js"></script> -->
 	<script src="assets/js/setup-profile.js"></script>
 	<!-- <script src="assets/js/signup.js"></script> -->
 
