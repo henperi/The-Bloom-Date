@@ -37,7 +37,7 @@ app.use(
 
 app.use('/api/v1/', allRoutes);
 
-app.use('*', (req, res, next) => res.status(404).json({
+app.use('/', (req, res, next) => res.status(404).json({
   success: false,
   errorMsg: [{ msg: 'This endpoint does not exist' }],
 }));

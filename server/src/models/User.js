@@ -26,6 +26,24 @@ class User {
   }
 
   /**
+   * Check if a user has inserted his profile
+   * @param {userId} userId
+   * @returns {object} user profile
+   */
+  async searchProfile(req, res, userId) {
+    const queryText = 'SELECT * FROM profiles WHERE user_id = $1';
+    try {
+      const { rows } = await this.users.query(queryText, [userId]);
+      return rows[0];
+    } catch (err) {
+      return res.status(500).json({
+        success: false,
+        errors: [{ msg: 'An error occured, while processing this request, try again in a moment' }],
+      });
+    }
+  }
+
+  /**
    * Create user account
    * @param {*} data
    * @returns {object} user ubject

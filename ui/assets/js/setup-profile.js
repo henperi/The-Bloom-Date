@@ -15,8 +15,8 @@ const loader = document.querySelector('.loader');
 const submitForm = document.querySelector('form');
 const responseArea = document.querySelector('.response-area');
 
-const { host } = window.location;
-console.log('host', host);
+// const { host } = window.location;
+// console.log('host', host);
 const userToken = localStorage.getItem('userToken');
 
 if (!userToken) {
@@ -27,6 +27,49 @@ if (!userToken) {
 }
 
 if (userToken) {
+  // alert(userToken)
+  // Attempt to fetch the user profile
+  const fetchProfileUrl = 'https://bloom-date.herokuapp.com/api/v1/users/fetchProfile';
+
+  fetch(fetchProfileUrl, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json, text/plain, */*',
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json;charset=UTF-8',
+      'x-access-token': userToken,
+    },
+  })
+    .then(res => res.json())
+    .then((data) => {
+      console.log('data::', data);
+      loader.classList.add('hide');
+      if (data.errors) {
+        const { errors } = data;
+        let errorMsg = '';
+        errors.forEach((err) => {
+          errorMsg += `<li class='list-group-item text-left'>${err.msg}</li>`;
+        });
+        loader.classList.add('hide');
+        return (responseArea.innerHTML = `<span class="text-danger">${errorMsg}</span>`);
+      }
+      if (data.success_msg === 'Your profile has been fetched') {
+        // alert(data.data.fullname);
+        localStorage.setItem('fullname', data.data.fullname);
+        const fullname = localStorage.getItem('fullname');
+        // alert(fullname);
+        responseArea.innerHTML = `<span class="text-success">You already have a profile, redirecting you...</span>` 
+                                || `<span class="text-success">${data.success_msg}</span>`;
+        return setInterval(() => {
+          window.location.href = 'home.html';
+        }, 500);
+      }
+    })
+    .catch((error) => {
+      loader.classList.add('hide');
+      responseArea.innerHTML = '<span class="list-group-item text-danger">A connection error occurred, try again in a moment</span>';
+    });
+
   countryInput.addEventListener('change', () => {
     responseArea.innerHTML = '';
   });
@@ -48,16 +91,16 @@ if (userToken) {
 
   let current = 1;
   back.classList.add('hide');
-  
+
   const goToNext = () => {
     const country = countryInput.value;
     const state = stateInput.value;
     const tribe = tribeInput.value;
-  
+
     const fullname = fullnameInput.value;
     const gender = genderInput.value;
     const residence = residenceInput.value;
-  
+
     if (current < 3) {
       responseArea.innerHTML = '';
       if (current === 1) {

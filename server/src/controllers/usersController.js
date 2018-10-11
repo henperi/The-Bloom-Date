@@ -103,6 +103,23 @@ const usersController = {
       userToken,
     });
   },
+
+  async fetchProfile(req, res) {
+    const { userId } = req.user;
+
+    const fetchProfile = await User.searchProfile(req, res, userId);
+    if (fetchProfile) {
+      return res.status(200).json({
+        success: true,
+        success_msg: 'Your profile has been fetched',
+        data: fetchProfile,
+      });
+    }
+    return res.status(404).json({
+      success: false,
+      success_msg: 'You have not set up your profile',
+    });
+  },
 };
 
 export default usersController;

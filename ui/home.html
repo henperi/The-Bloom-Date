@@ -109,18 +109,17 @@
 			<div class="row">
 				<div class="col-12 u-mt-80 text-center">
 					<h1 class="display-4 u-fw-500 text-white u-mb-40">
-						Hi, James
+						Hi, <span class="fullname"></span>
 					</h1>
 					<h3 class="display-6 text-white u-mb-20">
 						Thanks for completing your registration.
 					</h3>
-					<!-- <p class="u-fs-22 text-white u-lh-1_8 u-mb-40">
-		  Looking for love? or you just want to hookup with someone beautiful in your city?
-		  The Bloom Date is Nigeria's number one match making site. Create an account to get started!
-        </p> -->
-					<!-- <a href="sign-up-country.html" class="btn btn btn-rounded btn-primary m-2 px-md-5 py-3">
+					<p class="u-fs-18 text-white u-lh-1_8 u-mb-10 u-mt-40">
+						Your firends are looking for love on bloom date!
+					</p>
+					<a href="#" class="btn btn btn-rounded btn-primary m-2 px-md-5 py-3">
 						Get Started
-					</a> -->
+					</a>
 				</div> <!-- END col-lg-6-->
 			</div> <!-- END row-->
 
@@ -166,7 +165,13 @@
 
 	<script src="assets/js/bundle.js"></script>
 	<script src="assets/js/fury.js"></script>
-
+	<script src="assets/js/isAuthenticated.js"></script>
+	<script>
+		// alert(fullname)
+		const fullname = localStorage.getItem('fullname');
+		const nameSpan = document.querySelector('.fullname');
+		nameSpan.innerHTML = fullname;
+	</script>
 </body>
 
 </html>
