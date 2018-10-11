@@ -15,8 +15,8 @@ const loader = document.querySelector('.loader');
 const submitForm = document.querySelector('form');
 const responseArea = document.querySelector('.response-area');
 
-const host = 'http://127.0.0.1';
-
+const { host } = window.location;
+console.log('host', host);
 const userToken = localStorage.getItem('userToken');
 
 if (!userToken) {
