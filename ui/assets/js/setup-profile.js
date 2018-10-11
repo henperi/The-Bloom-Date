@@ -147,7 +147,7 @@ if(userToken) {
       residence,
       heardFrom,
     };
-    const signinUrl = 'http://https://bloom-date.herokuapp.com/api/v1/users/signup-2';
+    const signinUrl = 'https://bloom-date.herokuapp.com/api/v1/users/signup-2';
   
     fetch(signinUrl, {
       method: 'POST',
