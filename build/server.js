@@ -30,6 +30,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var app = (0, _express2.default)();
 
+// Static assets
+app.use(_express2.default.static('server/ui'));
+
 // Some neccessary middleware
 app.use(_bodyParser2.default.urlencoded({ extended: true }));
 app.use(_bodyParser2.default.json());
@@ -55,6 +58,13 @@ app.use((0, _expressValidator2.default)({
 }));
 
 app.use('/api/v1/', _index2.default);
+
+app.use('/', function (req, res, next) {
+  return res.status(404).json({
+    success: false,
+    errorMsg: [{ msg: 'This endpoint does not exist' }]
+  });
+});
 
 // Define The Port and Host
 var PORT = process.env.PORT || 4200;

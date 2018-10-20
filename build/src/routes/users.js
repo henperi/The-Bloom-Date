@@ -30,6 +30,7 @@ var router = _express2.default.Router();
 router.post('/signup-1', _validateSignup2.default.stepOne, _usersController2.default.signupStepOne);
 router.post('/signup-2', _Auth2.default.validateToken, _validateSignup2.default.stepTwo, _usersController2.default.signupStepTwo);
 router.post('/signin', _validateSignup2.default.signin, _usersController2.default.signin);
+router.get('/fetchProfile', _Auth2.default.validateToken, _usersController2.default.fetchProfile);
 
 router.use('', function (req, res) {
   return res.status(404).json({
