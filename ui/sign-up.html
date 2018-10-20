@@ -113,21 +113,23 @@
 									<div class="input-group-addon bg-white border-0 pl-4 pr-0">
 										<span class="icon icon-Mail text-primary"></span>
 									</div>
-									<input type="text" name="email" class="form-control border-0 p-2 email" placeholder="Your email">
+									<input type="text" name="email" class="form-control border-0 p-2 email" placeholder="Your email" required>
 								</div>
 
 								<div class="input-group u-rounded-50 border u-of-hidden u-mb-20">
 									<div class="input-group-addon bg-white border-0 pl-4 pr-0">
 										<span class="icon icon-ClosedLock  text-primary"></span>
 									</div>
-									<input type="password" class="form-control border-0 p-2 password" value="xxxxxx" placeholder="Password">
+									<input type="password" class="form-control border-0 p-2 password" value="" placeholder="Password (min of 8 characters)"
+									 required>
 								</div>
 
 								<div class="input-group u-rounded-50 border u-of-hidden u-mb-20">
 									<div class="input-group-addon bg-white border-0 pl-4 pr-0">
 										<span class="icon icon-ClosedLock  text-primary"></span>
 									</div>
-									<input type="password" class="form-control border-0 p-2 passwordConfirmation" value="xxxxxx" placeholder="Repeat password">
+									<input type="password" class="form-control border-0 p-2 passwordConfirmation" value="" placeholder="Repeat password"
+									 required>
 								</div>
 
 								<span class="h4 hide loader">
@@ -162,35 +164,11 @@
 		<i class="fa fa-angle-up" aria-hidden="true"></i>
 	</div>
 
-
-	<!--
-// ////////////////////////////////////////////////
-// To Reduce server request and improved page speed drastically all third-party plugin bundle in assets/js/bundle.js
-// If you wanna add those manually bellow is the sequence 
-// ///////////////////////////////////////////////
--->
-	<!--
-		<script src="assets/vendor/jquery/dist/jquery.min.js"></script>
-		<script src="assets/vendor/popper.js/dist/popper.min.js"></script>
-		<script src="assets/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-		<script src="assets/vendor/slick-carousel/slick/slick.min.js"></script>
-		<script src="assets/vendor/fancybox/dist/jquery.fancybox.min.js"></script>
-		<script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
-		<script src="assets/vendor/isotope/dist/isotope.pkgd.min.js"></script>
-		<script src="assets/vendor/parallax.js/parallax.min.js"></script>
-		<script src="assets/vendor/wow/dist/wow.min.js"></script>
-		<script src="assets/vendor/vide/dist/jquery.vide.min.js"></script>
-		<script src="assets/vendor/typed.js/lib/typed.min.js"></script>
-		<script src="assets/vendor/appear-master/dist/appear.min.js"></script>
-		<script src="assets/vendor/jquery.countdown/dist/jquery.countdown.min.js"></script>
-		<script src="assets/js/smoothscroll.js"></script>
--->
-
 	<script src="assets/js/bundle.js"></script>
 	<script src="assets/js/fury.js"></script>
-	<script src="assets/js/signup.js"></script>
-	<!-- <script src="assets/js/isAuthenticated.js"></script> -->
 
+	<script src="src/index.js"></script>
+	<script src="src/signup.js"></script>
 
 </body>
 

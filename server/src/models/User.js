@@ -49,7 +49,7 @@ class User {
    * @returns {object} user ubject
    */
   async createUser(req, res, data) {
-    console.log('DATA::', data);
+    // console.log('DATA::', data);
     const queryText = `INSERT INTO users(id, email, 
       password, role, created_at, updated_at)
       Values($1, $2, $3, $4, $5, $6)
@@ -83,13 +83,14 @@ class User {
   async insertUserProfile(req, res, data) {
     console.log('DARA', data);
     const queryText = `INSERT INTO profiles(user_id, fullname, 
-      gender, residence, country, state, tribe, heard_from, created_at, updated_at)
-      Values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+      gender, birthday, residence, country, state, tribe, heard_from, created_at, updated_at)
+      Values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
       returning *`;
     const values = [
       data.userId,
       data.fullname,
       data.gender,
+      data.birthday,
       data.residence,
       data.country,
       data.state,

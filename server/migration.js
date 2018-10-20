@@ -64,6 +64,7 @@ const createProfilesTable = () => {
         user_id VARCHAR(128) PRIMARY KEY,
         fullname VARCHAR(128),
         gender VARCHAR(128),
+        birthday VARCHAR(128),
         residence VARCHAR(128),
         country VARCHAR(128),
         state TEXT NOT NULL,

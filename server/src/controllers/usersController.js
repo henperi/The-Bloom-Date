@@ -10,8 +10,8 @@ const usersController = {
     const errors = [];
     let msg;
 
-    if (password.length < 6) {
-      msg = { msg: 'Your Password must be at least 6 characters' };
+    if (password.length < 8) {
+      msg = { msg: 'Your Password must be at least 8 characters' };
       errors.push(msg);
     }
     if (errors.length > 0) {
@@ -28,7 +28,7 @@ const usersController = {
 
       return res.status(409).json({
         success: false,
-        errors: [{ msg: 'This email has already been taken' }],
+        errors,
       });
     }
 
@@ -42,11 +42,12 @@ const usersController = {
 
     if (createUser.success) {
       const userToken = helper.generateToken(createUser.rows.id, createUser.rows.email);
-
+      console.log(createUser.rows);
       return res.status(201).json({
         success: true,
         success_msg: 'Account creation was successful, complete your profile',
         userToken,
+        role: createUser.rows.role,
       });
     }
   },
@@ -101,6 +102,7 @@ const usersController = {
       success: true,
       success_msg: 'Your signin was successful',
       userToken,
+      role: findUser.role,
     });
   },
 

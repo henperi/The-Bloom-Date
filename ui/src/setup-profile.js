@@ -4,71 +4,29 @@ const tribeInput = document.querySelector('.tribe');
 
 const fullnameInput = document.querySelector('.fullname');
 const genderInput = document.querySelector('.gender');
+const birthdayInput = document.querySelector('.birthday');
 const residenceInput = document.querySelector('.residence');
 
 const facebookInput = document.querySelector('.facebook');
 const instagramInput = document.querySelector('.instagram');
 const whatsappInput = document.querySelector('.whatsapp');
+const AdInput = document.querySelector('.Ad');
+const TvInput = document.querySelector('.Tv');
 const otherInput = document.querySelector('.other');
 
-const loader = document.querySelector('.loader');
+// const loader = document.querySelector('.loader');
+// const responseArea = document.querySelector('.response-area');
 const submitForm = document.querySelector('form');
-const responseArea = document.querySelector('.response-area');
-
-// const { host } = window.location;
-// console.log('host', host);
-const userToken = localStorage.getItem('userToken');
 
 if (!userToken) {
-  responseArea.innerHTML = '<span class="list-group-item text-danger">You can\'t access this page</span>';
-  setInterval(() => {
-    window.location.href = 'sign-up.html';
-  }, 200);
+  responseArea.innerHTML = '<span class="list-group-item text-danger">You need to login to access this page</span>';
+  flash('alert-error', 'Unable to authenticate you, Please login again');
+  setFlash('alert-error', 'Unable to authenticate you, Please login again');
+  redirectTo('../login.html');
 }
 
 if (userToken) {
-  // alert(userToken)
-  // Attempt to fetch the user profile
-  const fetchProfileUrl = 'https://bloom-date.herokuapp.com/api/v1/users/fetchProfile';
-
-  fetch(fetchProfileUrl, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json, text/plain, */*',
-      'Access-Control-Allow-Origin': '*',
-      'Content-Type': 'application/json;charset=UTF-8',
-      'x-access-token': userToken,
-    },
-  })
-    .then(res => res.json())
-    .then((data) => {
-      console.log('data::', data);
-      loader.classList.add('hide');
-      if (data.errors) {
-        const { errors } = data;
-        let errorMsg = '';
-        errors.forEach((err) => {
-          errorMsg += `<li class='list-group-item text-left'>${err.msg}</li>`;
-        });
-        loader.classList.add('hide');
-        return (responseArea.innerHTML = `<span class="text-danger">${errorMsg}</span>`);
-      }
-      if (data.success_msg === 'Your profile has been fetched') {
-        // alert(data.data.fullname);
-        localStorage.setItem('fullname', data.data.fullname);
-        const fullname = localStorage.getItem('fullname');
-        // alert(fullname);
-        responseArea.innerHTML = `<span class="text-success">You already have a profile, redirecting you...</span>` 
-                                || `<span class="text-success">${data.success_msg}</span>`;
-        return setInterval(() => {
-          window.location.href = 'home.html';
-        }, 500);
-      }
-    })
-    .catch((error) => {
-      loader.classList.add('hide');
-      responseArea.innerHTML = '<span class="list-group-item text-danger">A connection error occurred, try again in a moment</span>';
-    });
+  getUserProfile();
 
   countryInput.addEventListener('change', () => {
     responseArea.innerHTML = '';
@@ -88,10 +46,10 @@ if (userToken) {
   const third = document.querySelector('#third');
   const finish = document.querySelector('#finish');
 
-
   let current = 1;
   back.classList.add('hide');
 
+  // Go to next action button
   const goToNext = () => {
     const country = countryInput.value;
     const state = stateInput.value;
@@ -105,7 +63,8 @@ if (userToken) {
       responseArea.innerHTML = '';
       if (current === 1) {
         if (!country || !state || !tribe) {
-          return (responseArea.innerHTML = '<span class="text-danger vibrate list-group-item">All fields are required</span>');
+          responseArea.innerHTML = '<span class="text-danger vibrate list-group-item">All fields are required</span>';
+          return;
         }
         first.classList.add('hide');
         back.classList.remove('hide');
@@ -113,10 +72,12 @@ if (userToken) {
       }
       if (current === 2) {
         if (!fullname || !gender || !residence) {
-          return (responseArea.innerHTML = '<span class="text-danger vibrate list-group-item">All fields are required</span>');
+          responseArea.innerHTML = '<span class="text-danger vibrate list-group-item">All fields are required</span>';
+          return;
         }
         if (fullname.length < 4) {
-          return (responseArea.innerHTML = '<span class="text-danger vibrate list-group-item">Your name is too short</span>');
+          responseArea.innerHTML = '<span class="text-danger vibrate list-group-item">Your name is too short</span>';
+          return;
         }
         second.classList.add('hide');
         third.classList.remove('hide');
@@ -126,7 +87,8 @@ if (userToken) {
       current += 1;
     }
   };
-  
+
+  // Go to previous
   const goToPrevious = () => {
     if (current > 1) {
       responseArea.innerHTML = '';
@@ -146,24 +108,26 @@ if (userToken) {
       current -= 1;
     }
   };
-  
+
   next.addEventListener('click', goToNext);
   back.addEventListener('click', goToPrevious);
-  
+
+  // Submit the set up profile form
   submitForm.addEventListener('submit', (e) => {
     e.preventDefault();
     responseArea.innerHTML = '';
-  
+
     const country = countryInput.value;
     const state = stateInput.value;
     const tribe = tribeInput.value;
-  
+
     const fullname = fullnameInput.value;
     const gender = genderInput.value;
     const residence = residenceInput.value;
-  
+    const birthday = birthdayInput.value;
+
     const heardFrom = [];
-  
+
     if (facebookInput.checked) {
       heardFrom.push('Facebook');
     }
@@ -173,27 +137,36 @@ if (userToken) {
     if (whatsappInput.checked) {
       heardFrom.push('Whatsapp');
     }
+    if (AdInput.checked) {
+      heardFrom.push('Ad on my phone');
+    }
+    if (TvInput.checked) {
+      heardFrom.push('Tv');
+    }
     if (otherInput.value) {
       heardFrom.push(otherInput.value);
     }
-    // console.log(heardFrom)
+
     if (heardFrom.length < 1) {
-      return (responseArea.innerHTML = '<span class="text-danger list-group-item">Kindly pick an option or fill the other box</span>');
+      responseArea.innerHTML = '<span class="text-danger list-group-item">Kindly pick an option or fill the other box</span>';
+      return;
     }
     loader.classList.remove('hide');
-  
+
     const profileParams = {
       country,
       state,
       tribe,
       fullname,
       gender,
+      birthday,
       residence,
       heardFrom,
     };
-    const signinUrl = 'https://bloom-date.herokuapp.com/api/v1/users/signup-2';
-  
-    fetch(signinUrl, {
+
+    const setUpProfileUrl = `${localAPI}/users/signup-2`;
+
+    fetch(setUpProfileUrl, {
       method: 'POST',
       headers: {
         Accept: 'application/json, text/plain, */*',
@@ -213,15 +186,18 @@ if (userToken) {
             errorMsg += `<li class='list-group-item text-left'>${err.msg}</li>`;
           });
           loader.classList.add('hide');
-          return (responseArea.innerHTML = `<span class="text-danger">${errorMsg}</span>`);
+          responseArea.innerHTML = `<span class="text-danger">${errorMsg}</span>`;
+          return;
         }
-        // localStorage.setItem('userToken', data.userToken);
-        responseArea.innerHTML = data.success_msg || `<span class="text-success">${data.success_msg}</span>`;
-        setInterval(() => {
-          window.location.href = 'home.html';
-        }, 1000);
+        localStorage.setItem('fullname', fullname);
+        responseArea.innerHTML = `<span class="text-success">${data.success_msg}</span>`;
+        redirectTo('home.html');
+        // setInterval(() => {
+        //   window.location.href = 'home.html';
+        // }, 5000);
       })
       .catch((error) => {
+        console.log(error)
         loader.classList.add('hide');
         responseArea.innerHTML = '<span class="list-group-item text-danger">A connection error occurred, try again in a moment</span>';
       });

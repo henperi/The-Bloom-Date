@@ -23,6 +23,7 @@ const validateSignup = {
     req.checkBody('tribe', 'Your tribe is required').notEmpty();
     req.checkBody('fullname', 'Your fullname is required').notEmpty();
     req.checkBody('gender', 'Your gender is required').notEmpty();
+    req.checkBody('birthday', 'Your birthday is required').notEmpty();
     req.checkBody('residence', 'Your residence is required').notEmpty();
     req.checkBody('heardFrom', 'Please tell us how you got to know about us').notEmpty();
     console.log(req.body);
@@ -31,13 +32,9 @@ const validateSignup = {
       return res.status(400).json({ success: false, errors });
     }
 
-    const { country } = req.body;
-    const { state } = req.body;
-    const { tribe } = req.body;
-    const { fullname } = req.body;
-    const { gender } = req.body;
-    const { residence } = req.body;
-    const { heardFrom } = req.body;
+    const {
+      country, state, tribe, fullname, gender, birthday, residence, heardFrom,
+    } = req.body;
 
     errors = [];
     let msg;
@@ -98,6 +95,11 @@ const validateSignup = {
 
     if (!heardFrom) {
       msg = { msg: 'Kindly tell us how you got to know about us' };
+      errors.push(msg);
+    }
+
+    if (!birthday) {
+      msg = { msg: 'Kindly tell us your birthday' };
       errors.push(msg);
     }
 
