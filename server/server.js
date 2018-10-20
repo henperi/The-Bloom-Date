@@ -9,7 +9,7 @@ import allRoutes from './src/routes/index';
 const app = express();
 
 // Static assets
-app.use(express.static('ui'));
+app.use(express.static('server/ui'));
 
 // Some neccessary middleware
 app.use(bodyParser.urlencoded({ extended: true }));
