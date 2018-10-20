@@ -31,8 +31,8 @@ var usersController = {
               msg = void 0;
 
 
-              if (password.length < 6) {
-                msg = { msg: 'Your Password must be at least 6 characters' };
+              if (password.length < 8) {
+                msg = { msg: 'Your Password must be at least 8 characters' };
                 errors.push(msg);
               }
 
@@ -63,7 +63,7 @@ var usersController = {
 
               return _context.abrupt('return', res.status(409).json({
                 success: false,
-                errors: [{ msg: 'This email has already been taken' }]
+                errors: errors
               }));
 
             case 15:
@@ -80,18 +80,21 @@ var usersController = {
               createUser = _context.sent;
 
               if (!createUser.success) {
-                _context.next = 23;
+                _context.next = 24;
                 break;
               }
 
               userToken = _helper2.default.generateToken(createUser.rows.id, createUser.rows.email);
+
+              console.log(createUser.rows);
               return _context.abrupt('return', res.status(201).json({
                 success: true,
                 success_msg: 'Account creation was successful, complete your profile',
-                userToken: userToken
+                userToken: userToken,
+                role: createUser.rows.role
               }));
 
-            case 23:
+            case 24:
             case 'end':
               return _context.stop();
           }
@@ -199,7 +202,8 @@ var usersController = {
               return _context3.abrupt('return', res.status(200).json({
                 success: true,
                 success_msg: 'Your signin was successful',
-                userToken: userToken
+                userToken: userToken,
+                role: findUser.role
               }));
 
             case 12:
@@ -215,6 +219,51 @@ var usersController = {
     }
 
     return signin;
+  }(),
+  fetchProfile: function () {
+    var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(req, res) {
+      var userId, fetchProfile;
+      return regeneratorRuntime.wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              userId = req.user.userId;
+              _context4.next = 3;
+              return _User2.default.searchProfile(req, res, userId);
+
+            case 3:
+              fetchProfile = _context4.sent;
+
+              if (!fetchProfile) {
+                _context4.next = 6;
+                break;
+              }
+
+              return _context4.abrupt('return', res.status(200).json({
+                success: true,
+                success_msg: 'Your profile has been fetched',
+                data: fetchProfile
+              }));
+
+            case 6:
+              return _context4.abrupt('return', res.status(404).json({
+                success: false,
+                success_msg: 'You have not set up your profile'
+              }));
+
+            case 7:
+            case 'end':
+              return _context4.stop();
+          }
+        }
+      }, _callee4, this);
+    }));
+
+    function fetchProfile(_x7, _x8) {
+      return _ref4.apply(this, arguments);
+    }
+
+    return fetchProfile;
   }()
 };
 

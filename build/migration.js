@@ -106,7 +106,7 @@ var createUsersTable = function createUsersTable() {
 };
 
 var createProfilesTable = function createProfilesTable() {
-  var queryText = 'CREATE TABLE IF NOT EXISTS\n      profiles(\n        user_id VARCHAR(128) PRIMARY KEY,\n        fullname VARCHAR(128),\n        gender VARCHAR(128),\n        residence VARCHAR(128),\n        country VARCHAR(128),\n        state TEXT NOT NULL,\n        tribe TEXT NOT NULL,\n        heard_from TEXT NOT NULL,\n        created_at TIMESTAMP,\n        updated_at TIMESTAMP\n      )';
+  var queryText = 'CREATE TABLE IF NOT EXISTS\n      profiles(\n        user_id VARCHAR(128) PRIMARY KEY,\n        fullname VARCHAR(128),\n        gender VARCHAR(128),\n        birthday VARCHAR(128),\n        residence VARCHAR(128),\n        country VARCHAR(128),\n        state TEXT NOT NULL,\n        tribe TEXT NOT NULL,\n        heard_from TEXT NOT NULL,\n        created_at TIMESTAMP,\n        updated_at TIMESTAMP\n      )';
 
   pool.query(queryText).then(function (res) {
     console.log('res:', res);
