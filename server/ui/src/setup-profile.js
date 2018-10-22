@@ -174,7 +174,7 @@ if (userToken) {
 
     const country = countryInput.value;
     const state = stateInput.value;
-    const tribe = tribeInput.value;
+    const tribe = tribeInput.value || TRIBE;
 
     const fullname = fullnameInput.value;
     const gender = genderInput.value;
