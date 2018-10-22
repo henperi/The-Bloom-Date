@@ -9,12 +9,65 @@ var genderInput = document.querySelector('.gender');
 var birthdayInput = document.querySelector('.birthday');
 var residenceInput = document.querySelector('.residence');
 
-var facebookInput = document.querySelector('.facebook');
-var instagramInput = document.querySelector('.instagram');
-var whatsappInput = document.querySelector('.whatsapp');
-var AdInput = document.querySelector('.Ad');
-var TvInput = document.querySelector('.Tv');
-var otherInput = document.querySelector('.other');
+// const facebookInput = document.querySelector('.facebook');
+// const instagramInput = document.querySelector('.instagram');
+// const whatsappInput = document.querySelector('.whatsapp');
+// const AdInput = document.querySelector('.Ad');
+// const TvInput = document.querySelector('.Tv');
+// const otherInput = document.querySelector('.other');
+
+// const radioInput = document.querySelectorAll('input[name="heardFrom"]');
+// console.log(radioInput);
+
+var heardFrom = '';
+var otherTextField = document.querySelector('.heard-from-other-text');
+var otherRadioField = document.querySelector('.heard-from-other-radio');
+
+console.log(otherTextField.value);
+
+otherTextField.addEventListener('keyup', function () {
+  heardFrom = otherTextField.value;
+});
+
+var TRIBE = '';
+var tribeModal = document.querySelector('.tribe-modal');
+
+tribeModal.addEventListener('keyup', function () {
+  TRIBE = tribeModal.value;
+  document.querySelector('.otherTribe').innerHTML = TRIBE;
+});
+
+window.addEventListener('click', function (e) {
+  if (e.target.classList.contains('tribe')) {
+    e.target.options[0].value = 'x';
+    if (e.target.value === '') {
+      var targetModal = e.srcElement.getAttribute('data-target');
+      document.getElementById('#' + targetModal).classList.add('show-modal');
+    }
+    if (e.target.value !== '') {
+      document.querySelector('.otherTribe').innerHTML = 'Other';
+      document.querySelector('.close-button').click();
+    }
+    if (e.target.classList.contains('close-button')) {
+      var modalToClose = e.target.offsetParent.offsetParent.getAttribute('id');
+      document.getElementById(modalToClose).classList.remove('show-modal');
+      // document.querySelector('.otherTribe').innerHTML = "Other";
+    }
+    e.target.options['0'].value = '';
+  }
+  if (e.target.name === 'heardFrom') {
+    heardFrom = e.target.value;
+
+    if (e.target.type === 'text') {
+      otherRadioField.click();
+    }
+    if (!heardFrom) {
+      otherTextField.focus();
+      heardFrom = otherTextField.value;
+    }
+    console.log(heardFrom);
+  }
+});
 
 // const loader = document.querySelector('.loader');
 // const responseArea = document.querySelector('.response-area');
@@ -55,12 +108,14 @@ if (userToken) {
   var goToNext = function goToNext() {
     var country = countryInput.value;
     var state = stateInput.value;
-    var tribe = tribeInput.value;
+    var tribe = tribeInput.value || TRIBE;
 
     var fullname = fullnameInput.value;
     var gender = genderInput.value;
+    var birthday = birthdayInput.value;
     var residence = residenceInput.value;
 
+    console.log('TribeV::', tribe);
     if (current < 3) {
       responseArea.innerHTML = '';
       if (current === 1) {
@@ -73,7 +128,7 @@ if (userToken) {
         second.classList.remove('hide');
       }
       if (current === 2) {
-        if (!fullname || !gender || !residence) {
+        if (!fullname || !gender || !birthday || !residence) {
           responseArea.innerHTML = '<span class="text-danger vibrate list-group-item">All fields are required</span>';
           return;
         }
@@ -121,35 +176,14 @@ if (userToken) {
 
     var country = countryInput.value;
     var state = stateInput.value;
-    var tribe = tribeInput.value;
+    var tribe = tribeInput.value || TRIBE;
 
     var fullname = fullnameInput.value;
     var gender = genderInput.value;
     var residence = residenceInput.value;
     var birthday = birthdayInput.value;
 
-    var heardFrom = [];
-
-    if (facebookInput.checked) {
-      heardFrom.push('Facebook');
-    }
-    if (instagramInput.checked) {
-      heardFrom.push('Instagram');
-    }
-    if (whatsappInput.checked) {
-      heardFrom.push('Whatsapp');
-    }
-    if (AdInput.checked) {
-      heardFrom.push('Ad on my phone');
-    }
-    if (TvInput.checked) {
-      heardFrom.push('Tv');
-    }
-    if (otherInput.value) {
-      heardFrom.push(otherInput.value);
-    }
-
-    if (heardFrom.length < 1) {
+    if (!heardFrom) {
       responseArea.innerHTML = '<span class="text-danger list-group-item">Kindly pick an option or fill the other box</span>';
       return;
     }
