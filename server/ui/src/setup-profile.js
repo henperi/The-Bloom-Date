@@ -7,12 +7,65 @@ const genderInput = document.querySelector('.gender');
 const birthdayInput = document.querySelector('.birthday');
 const residenceInput = document.querySelector('.residence');
 
-const facebookInput = document.querySelector('.facebook');
-const instagramInput = document.querySelector('.instagram');
-const whatsappInput = document.querySelector('.whatsapp');
-const AdInput = document.querySelector('.Ad');
-const TvInput = document.querySelector('.Tv');
-const otherInput = document.querySelector('.other');
+// const facebookInput = document.querySelector('.facebook');
+// const instagramInput = document.querySelector('.instagram');
+// const whatsappInput = document.querySelector('.whatsapp');
+// const AdInput = document.querySelector('.Ad');
+// const TvInput = document.querySelector('.Tv');
+// const otherInput = document.querySelector('.other');
+
+// const radioInput = document.querySelectorAll('input[name="heardFrom"]');
+// console.log(radioInput);
+
+let heardFrom = '';
+const otherTextField = document.querySelector('.heard-from-other-text');
+const otherRadioField = document.querySelector('.heard-from-other-radio');
+
+console.log(otherTextField.value);
+
+otherTextField.addEventListener('keyup', () => {
+  heardFrom = otherTextField.value;
+});
+
+let TRIBE = '';
+const tribeModal = document.querySelector('.tribe-modal');
+
+tribeModal.addEventListener('keyup', () => {
+  TRIBE = tribeModal.value;
+  document.querySelector('.otherTribe').innerHTML = TRIBE;
+});
+
+window.addEventListener('click', (e) => {
+  if (e.target.classList.contains('tribe')) {
+    e.target.options[0].value = 'x';
+    if (e.target.value === '') {
+      const targetModal = e.srcElement.getAttribute('data-target');
+      document.getElementById(`#${targetModal}`).classList.add('show-modal');
+    }
+    if (e.target.value !== '') {
+      document.querySelector('.otherTribe').innerHTML = 'Other';
+      document.querySelector('.close-button').click();
+    }
+    if (e.target.classList.contains('close-button')) {
+      const modalToClose = e.target.offsetParent.offsetParent.getAttribute('id');
+      document.getElementById(modalToClose).classList.remove('show-modal');
+      // document.querySelector('.otherTribe').innerHTML = "Other";
+    }
+    e.target.options['0'].value = '';
+  }
+  if (e.target.name === 'heardFrom') {
+    heardFrom = e.target.value;
+
+    if (e.target.type === 'text') {
+      otherRadioField.click();
+    }
+    if (!heardFrom) {
+      otherTextField.focus();
+      heardFrom = otherTextField.value;
+    }
+    console.log(heardFrom);
+  }
+});
 
 // const loader = document.querySelector('.loader');
 // const responseArea = document.querySelector('.response-area');
@@ -53,12 +106,14 @@ if (userToken) {
   const goToNext = () => {
     const country = countryInput.value;
     const state = stateInput.value;
-    const tribe = tribeInput.value;
+    const tribe = tribeInput.value || TRIBE;
 
     const fullname = fullnameInput.value;
     const gender = genderInput.value;
+    const birthday = birthdayInput.value;
     const residence = residenceInput.value;
 
+    console.log('TribeV::', tribe);
     if (current < 3) {
       responseArea.innerHTML = '';
       if (current === 1) {
@@ -71,7 +126,7 @@ if (userToken) {
         second.classList.remove('hide');
       }
       if (current === 2) {
-        if (!fullname || !gender || !residence) {
+        if (!fullname || !gender || !birthday || !residence) {
           responseArea.innerHTML = '<span class="text-danger vibrate list-group-item">All fields are required</span>';
           return;
         }
@@ -126,28 +181,7 @@ if (userToken) {
     const residence = residenceInput.value;
     const birthday = birthdayInput.value;
 
-    const heardFrom = [];
-
-    if (facebookInput.checked) {
-      heardFrom.push('Facebook');
-    }
-    if (instagramInput.checked) {
-      heardFrom.push('Instagram');
-    }
-    if (whatsappInput.checked) {
-      heardFrom.push('Whatsapp');
-    }
-    if (AdInput.checked) {
-      heardFrom.push('Ad on my phone');
-    }
-    if (TvInput.checked) {
-      heardFrom.push('Tv');
-    }
-    if (otherInput.value) {
-      heardFrom.push(otherInput.value);
-    }
-
-    if (heardFrom.length < 1) {
+    if (!heardFrom) {
       responseArea.innerHTML = '<span class="text-danger list-group-item">Kindly pick an option or fill the other box</span>';
       return;
     }
@@ -197,7 +231,7 @@ if (userToken) {
         // }, 5000);
       })
       .catch((error) => {
-        console.log(error)
+        console.log(error);
         loader.classList.add('hide');
         responseArea.innerHTML = '<span class="list-group-item text-danger">A connection error occurred, try again in a moment</span>';
       });
