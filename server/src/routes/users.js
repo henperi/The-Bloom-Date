@@ -16,6 +16,7 @@ router.post('/signup-1', validateSignup.stepOne, usersController.signupStepOne);
 router.post('/signup-2', Auth.validateToken, validateSignup.stepTwo, usersController.signupStepTwo);
 router.post('/signin', validateSignup.signin, usersController.signin);
 router.get('/fetchProfile', Auth.validateToken, usersController.fetchProfile);
+router.get('/fetchAllProfiles', Auth.validateToken, Auth.isAdmin, usersController.fetchAllProfiles);
 
 router.use('', (req, res) => res.status(404).json({
   success: false,

@@ -55,7 +55,7 @@ const Auth = {
    */
   async isUser(req, res, next) {
     // console.log('role', req.userRole);
-    if (req.userRole !== 'User') {
+    if (req.user.userRole !== 'User') {
       return res.status(401).send({
         success: false,
         errors: [{ msg: 'Unauthorized access, only users are allowed to do this' }],
@@ -72,8 +72,8 @@ const Auth = {
    * @returns {object|void} response object
    */
   async isAdmin(req, res, next) {
-    // console.log('role', req.userRole);
-    if (req.userRole !== 'Admin') {
+    console.log('role', req.user.userRole);
+    if (req.user.userRole !== 'Admin') {
       return res.status(401).send({
         success: false,
         errors: [{ msg: 'Unauthorized access, only admins can access this area' }],

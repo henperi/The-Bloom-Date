@@ -79,7 +79,8 @@ if (!userToken) {
 }
 
 if (userToken) {
-  getUserProfile();
+  localStorage.getItem('role') === 'Admin' ? getAdminProfile() : getUserProfile()
+  // getUserProfile();
 
   countryInput.addEventListener('change', () => {
     responseArea.innerHTML = '';

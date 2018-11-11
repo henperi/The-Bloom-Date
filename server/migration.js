@@ -1,7 +1,8 @@
 const { Pool } = require('pg');
 const dotenv = require('dotenv');
-// const randomId = require('uuid');
-// const bcrypt = require('bcryptjs');
+const randomId = require('uuid');
+const bcrypt = require('bcryptjs');
+// const helper = require('./src/controllers/helper');
 
 require('babel-polyfill');
 
@@ -86,6 +87,37 @@ const createProfilesTable = () => {
     });
 };
 
+const insertAdmin = () => {
+  // const hashPassword = password => bcrypt.hashSync(password, bcrypt.genSaltSync(8));
+  // const password = hashPassword(process.env.ADMIN_PASSWORD);
+  // const password = bcrypt.hashSync(process.env.ADMIN_PASSWORD, bcrypt.genSaltSync(8));
+  // const hashPassword = helper.hashPassword(process.env.ADMIN_PASSWORD);
+
+  const hashPassword = () => bcrypt.hashSync(process.env.ADMIN_PASSWORD, bcrypt.genSaltSync(8));
+  const queryText = `INSERT INTO users(id, email, 
+    password, role, created_at, updated_at)
+    Values($1, $2, $3, $4, $5, $6)
+    returning *`;
+  const values = [
+    randomId.v1(),
+    process.env.ADMIN_EMAIL,
+    hashPassword(),
+    'Admin',
+    new Date(),
+    new Date(),
+  ];
+  console.log(values);
+  pool
+    .query(queryText, values)
+    .then((res) => {
+      console.log('res:', res);
+      pool.end();
+    })
+    .catch((err) => {
+      console.log('err:', err);
+      pool.end();
+    });
+};
 /**
  * Drop Tables
  */
@@ -139,6 +171,7 @@ module.exports = {
   dropAllTables,
   dropUsersTable,
   dropProfilesTable,
+  insertAdmin,
 };
 
 require('make-runnable');

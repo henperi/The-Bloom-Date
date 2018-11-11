@@ -44,6 +44,24 @@ class User {
   }
 
   /**
+   * Check if a user has inserted his profile
+   * @param {userId} userId
+   * @returns {object} user profile
+   */
+  async fetchAllProfiles(req, res) {
+    const queryText = 'SELECT * FROM profiles';
+    try {
+      const { rows } = await this.users.query(queryText);
+      return rows;
+    } catch (err) {
+      return res.status(500).json({
+        success: false,
+        errors: [{ msg: 'An error occured, while processing this request, try again in a moment' }],
+      });
+    }
+  }
+
+  /**
    * Create user account
    * @param {*} data
    * @returns {object} user ubject
