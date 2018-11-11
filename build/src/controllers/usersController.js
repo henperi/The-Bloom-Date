@@ -264,6 +264,50 @@ var usersController = {
     }
 
     return fetchProfile;
+  }(),
+  fetchAllProfiles: function () {
+    var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(req, res) {
+      var fetchAllProfiles;
+      return regeneratorRuntime.wrap(function _callee5$(_context5) {
+        while (1) {
+          switch (_context5.prev = _context5.next) {
+            case 0:
+              _context5.next = 2;
+              return _User2.default.fetchAllProfiles(req, res);
+
+            case 2:
+              fetchAllProfiles = _context5.sent;
+
+              if (!fetchAllProfiles) {
+                _context5.next = 5;
+                break;
+              }
+
+              return _context5.abrupt('return', res.status(200).json({
+                success: true,
+                success_msg: 'Profiles have been fetched',
+                data: fetchAllProfiles
+              }));
+
+            case 5:
+              return _context5.abrupt('return', res.status(404).json({
+                success: false,
+                success_msg: 'No profiles found'
+              }));
+
+            case 6:
+            case 'end':
+              return _context5.stop();
+          }
+        }
+      }, _callee5, this);
+    }));
+
+    function fetchAllProfiles(_x9, _x10) {
+      return _ref5.apply(this, arguments);
+    }
+
+    return fetchAllProfiles;
   }()
 };
 

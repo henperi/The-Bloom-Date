@@ -116,7 +116,7 @@ var Auth = {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
-              if (!(req.userRole !== 'User')) {
+              if (!(req.user.userRole !== 'User')) {
                 _context2.next = 2;
                 break;
               }
@@ -158,8 +158,10 @@ var Auth = {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
-              if (!(req.userRole !== 'Admin')) {
-                _context3.next = 2;
+              console.log('role', req.user.userRole);
+
+              if (!(req.user.userRole !== 'Admin')) {
+                _context3.next = 3;
                 break;
               }
 
@@ -168,10 +170,10 @@ var Auth = {
                 errors: [{ msg: 'Unauthorized access, only admins can access this area' }]
               }));
 
-            case 2:
+            case 3:
               return _context3.abrupt('return', next());
 
-            case 3:
+            case 4:
             case 'end':
               return _context3.stop();
           }

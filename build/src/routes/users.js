@@ -31,6 +31,7 @@ router.post('/signup-1', _validateSignup2.default.stepOne, _usersController2.def
 router.post('/signup-2', _Auth2.default.validateToken, _validateSignup2.default.stepTwo, _usersController2.default.signupStepTwo);
 router.post('/signin', _validateSignup2.default.signin, _usersController2.default.signin);
 router.get('/fetchProfile', _Auth2.default.validateToken, _usersController2.default.fetchProfile);
+router.get('/fetchAllProfiles', _Auth2.default.validateToken, _Auth2.default.isAdmin, _usersController2.default.fetchAllProfiles);
 
 router.use('', function (req, res) {
   return res.status(404).json({

@@ -132,6 +132,81 @@ var getUserProfile = function getUserProfile() {
   }
 };
 
+/**
+ * Get The Authenticated User Profile
+ */
+var getAdminProfile = function getAdminProfile() {
+  var userToken = localStorage.getItem('userToken') || undefined;
+  if (userToken) {
+    var fetchProfileUrl = localAPI + '/users/fetchProfile';
+
+    fetch(fetchProfileUrl, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json, text/plain, */*',
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json;charset=UTF-8',
+        'x-access-token': userToken
+      }
+    }).then(function (res) {
+      return res.json();
+    }).then(function (data) {
+      // Profile was not found
+      if (!data.success) {
+        // calling this from login page
+        if (window.location.pathname === '/login.html') {
+          document.querySelector('.row').innerHTML = '';
+          flash('alert-danger', data.success_msg + ', redirecting you...');
+          redirectTo('/admin/set-up-profile.html', true);
+          return;
+        }
+        // calling from any other page
+        if (window.location.pathname !== '/admin/set-up-profile.html') {
+          document.querySelector('.row').innerHTML = '';
+          flash('alert-danger', data.success_msg + ', redirecting you...');
+          redirectTo('set-up-profile.html', true);
+          return;
+        }
+        // redirectTo('users/set-up-profile.html', true);
+        // return;
+      }
+
+      // Profile fetched
+      if (data.success_msg === 'Your profile has been fetched') {
+        localStorage.setItem('fullname', data.data.fullname);
+        var firstname = localStorage.getItem('fullname').split(' ')[0];
+
+        // If its in the setup profile page
+        if (window.location.pathname === '/admin/set-up-profile.html') {
+          responseArea.innerHTML = '<span class="text-success">You already have a profile, redirecting you...</span>';
+
+          flash('alert-success', 'You already have a profile, redirecting...');
+          setFlash('alert-success', 'You already have a profile, redirecting...');
+          redirectTo('home.html');
+          // return;
+        }
+        // If its in the login page
+        if (window.location.pathname === '/login.html') {
+          responseArea.innerHTML = '<span class="text-success">You already have a profile, redirecting you...</span>';
+
+          setFlash('alert-success', 'Welcome back ' + firstname);
+          redirectTo('admin/home.html');
+        }
+      }
+    }).catch(function (error) {
+      console.log(error);
+      loader.classList.add('hide');
+      responseArea.innerHTML = '\n        <li class="list-group-item text-danger">\n          A connection error occurred, try again in a moment\n        </li>';
+    });
+  }
+  if (!userToken) {
+    localStorage.clear();
+    flash('alert-danger', 'You need to login to access this page');
+    setFlash('alert-danger', 'You need to login to access this page');
+    redirectTo('../login.html');
+  }
+};
+
 // Check for flash messages
 var flashMsg = localStorage.getItem('flash') || undefined;
 if (flashMsg) {

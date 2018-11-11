@@ -77,6 +77,11 @@ signin.addEventListener('submit', function (e) {
     responseArea.innerHTML = '<li class="list-group-item text-success">' + data.success_msg + '</li>';
 
     flash('alert-success', 'Loging you in');
+
+    if (data.role === 'Admin') {
+      getAdminProfile();
+      return;
+    }
     getUserProfile();
   }).catch(function (error) {
     loader.classList.add('hide');
