@@ -9,7 +9,8 @@
     "heroku-start": "node ./build/server.js",
     "start": "babel-watch ./server/server.js",
     "migrate-up": "node server/migration createAllTables",
-    "migrate-down": "node server/migration dropAllTables"
+    "migrate-down": "node server/migration dropAllTables",
+    "insert-admin": "node server/migration insertAdmin"
   },
   "repository": {
     "type": "git",

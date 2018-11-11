@@ -58,8 +58,9 @@ var _require = require('pg'),
     Pool = _require.Pool;
 
 var dotenv = require('dotenv');
-// const randomId = require('uuid');
-// const bcrypt = require('bcryptjs');
+var randomId = require('uuid');
+var bcrypt = require('bcryptjs');
+// const helper = require('./src/controllers/helper');
 
 require('babel-polyfill');
 
@@ -106,7 +107,7 @@ var createUsersTable = function createUsersTable() {
 };
 
 var createProfilesTable = function createProfilesTable() {
-  var queryText = 'CREATE TABLE IF NOT EXISTS\n      profiles(\n        user_id VARCHAR(128) PRIMARY KEY,\n        fullname VARCHAR(128),\n        gender VARCHAR(128),\n        residence VARCHAR(128),\n        country VARCHAR(128),\n        state TEXT NOT NULL,\n        tribe TEXT NOT NULL,\n        heard_from TEXT NOT NULL,\n        created_at TIMESTAMP,\n        updated_at TIMESTAMP\n      )';
+  var queryText = 'CREATE TABLE IF NOT EXISTS\n      profiles(\n        user_id VARCHAR(128) PRIMARY KEY,\n        fullname VARCHAR(128),\n        gender VARCHAR(128),\n        birthday VARCHAR(128),\n        residence VARCHAR(128),\n        country VARCHAR(128),\n        state TEXT NOT NULL,\n        tribe TEXT NOT NULL,\n        heard_from TEXT NOT NULL,\n        created_at TIMESTAMP,\n        updated_at TIMESTAMP\n      )';
 
   pool.query(queryText).then(function (res) {
     console.log('res:', res);
@@ -117,6 +118,26 @@ var createProfilesTable = function createProfilesTable() {
   });
 };
 
+var insertAdmin = function insertAdmin() {
+  // const hashPassword = password => bcrypt.hashSync(password, bcrypt.genSaltSync(8));
+  // const password = hashPassword(process.env.ADMIN_PASSWORD);
+  // const password = bcrypt.hashSync(process.env.ADMIN_PASSWORD, bcrypt.genSaltSync(8));
+  // const hashPassword = helper.hashPassword(process.env.ADMIN_PASSWORD);
+
+  var hashPassword = function hashPassword() {
+    return bcrypt.hashSync(process.env.ADMIN_PASSWORD, bcrypt.genSaltSync(8));
+  };
+  var queryText = 'INSERT INTO users(id, email, \n    password, role, created_at, updated_at)\n    Values($1, $2, $3, $4, $5, $6)\n    returning *';
+  var values = [randomId.v1(), process.env.ADMIN_EMAIL, hashPassword(), 'Admin', new Date(), new Date()];
+  console.log(values);
+  pool.query(queryText, values).then(function (res) {
+    console.log('res:', res);
+    pool.end();
+  }).catch(function (err) {
+    console.log('err:', err);
+    pool.end();
+  });
+};
 /**
  * Drop Tables
  */
@@ -153,7 +174,8 @@ module.exports = {
   createProfilesTable: createProfilesTable,
   dropAllTables: dropAllTables,
   dropUsersTable: dropUsersTable,
-  dropProfilesTable: dropProfilesTable
+  dropProfilesTable: dropProfilesTable,
+  insertAdmin: insertAdmin
 };
 
 require('make-runnable');

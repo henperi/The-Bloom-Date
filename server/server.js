@@ -32,7 +32,7 @@ app.use((req, res, next) => {
 // Express Validator Middleware
 app.use(
   expressValidator({
-    errorFormatter: (param, msg, value) => ({
+    errorFormatter: (param, msg) => ({
       msg,
     }),
   }),
@@ -40,7 +40,9 @@ app.use(
 
 app.use('/api/v1/', allRoutes);
 
-app.use('/', (req, res, next) => res.status(404).json({
+app.use('*/*', express.static('server/ui/404.html'));
+
+app.use('/', (req, res) => res.status(404).json({
   success: false,
   errorMsg: [{ msg: 'This endpoint does not exist' }],
 }));

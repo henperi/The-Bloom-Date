@@ -122,6 +122,23 @@ const usersController = {
       success_msg: 'You have not set up your profile',
     });
   },
+
+  async fetchAllProfiles(req, res) {
+    // const { userId } = req.user;
+
+    const fetchAllProfiles = await User.fetchAllProfiles(req, res);
+    if (fetchAllProfiles) {
+      return res.status(200).json({
+        success: true,
+        success_msg: 'Profiles have been fetched',
+        data: fetchAllProfiles,
+      });
+    }
+    return res.status(404).json({
+      success: false,
+      success_msg: 'No profiles found',
+    });
+  },
 };
 
 export default usersController;
