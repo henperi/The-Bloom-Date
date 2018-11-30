@@ -32,15 +32,36 @@ app.use((req, res, next) => {
 // Express Validator Middleware
 app.use(
   expressValidator({
-    errorFormatter: (param, msg, value) => ({
+    errorFormatter: (param, msg) => ({
       msg,
     }),
   }),
 );
 
+const sgMail = require('@sendgrid/mail');
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const msg = {
+  to: 'test@example.com',
+  from: 'test@example.com',
+  subject: 'Sending with SendGrid is Fun',
+  text: 'and easy to do anywhere, even with Node.js',
+  html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+};
+sgMail
+  .send(msg)
+  .then(() => {
+    console.log('success');
+    return 'Email sent';
+  })
+  .catch((error) => {
+    // Log friendly error message
+    console.log('error', error);
+  });
+
 app.use('/api/v1/', allRoutes);
 
-app.use('/', (req, res, next) => res.status(404).json({
+app.use('/', (req, res) => res.status(404).json({
   success: false,
   errorMsg: [{ msg: 'This endpoint does not exist' }],
 }));

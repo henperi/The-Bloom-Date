@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/henperi/The-Bloom-Date#readme",
   "dependencies": {
+    "@sendgrid/mail": "^6.3.1",
     "async": "^2.6.1",
     "babel-polyfill": "^6.26.0",
     "bcryptjs": "^2.4.3",
