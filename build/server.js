@@ -30,6 +30,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var app = (0, _express2.default)();
 
+// Static assets
+app.use(_express2.default.static('server/ui'));
+
 // Some neccessary middleware
 app.use(_bodyParser2.default.urlencoded({ extended: true }));
 app.use(_bodyParser2.default.json());
@@ -47,14 +50,39 @@ app.use(function (req, res, next) {
 
 // Express Validator Middleware
 app.use((0, _expressValidator2.default)({
-  errorFormatter: function errorFormatter(param, msg, value) {
+  errorFormatter: function errorFormatter(param, msg) {
     return {
       msg: msg
     };
   }
 }));
 
+var sgMail = require('@sendgrid/mail');
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+var msg = {
+  to: 'test@example.com',
+  from: 'test@example.com',
+  subject: 'Sending with SendGrid is Fun',
+  text: 'and easy to do anywhere, even with Node.js',
+  html: '<strong>and easy to do anywhere, even with Node.js</strong>'
+};
+sgMail.send(msg).then(function () {
+  console.log('success');
+  return 'Email sent';
+}).catch(function (error) {
+  // Log friendly error message
+  console.log('error', error);
+});
+
 app.use('/api/v1/', _index2.default);
+
+app.use('/', function (req, res) {
+  return res.status(404).json({
+    success: false,
+    errorMsg: [{ msg: 'This endpoint does not exist' }]
+  });
+});
 
 // Define The Port and Host
 var PORT = process.env.PORT || 4200;

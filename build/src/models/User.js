@@ -80,6 +80,55 @@ var User = function () {
     }()
 
     /**
+     * Check if a user has inserted his profile
+     * @param {userId} userId
+     * @returns {object} user profile
+     */
+
+  }, {
+    key: 'searchProfile',
+    value: function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(req, res, userId) {
+        var queryText, _ref4, rows;
+
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                queryText = 'SELECT * FROM profiles WHERE user_id = $1';
+                _context2.prev = 1;
+                _context2.next = 4;
+                return this.users.query(queryText, [userId]);
+
+              case 4:
+                _ref4 = _context2.sent;
+                rows = _ref4.rows;
+                return _context2.abrupt('return', rows[0]);
+
+              case 9:
+                _context2.prev = 9;
+                _context2.t0 = _context2['catch'](1);
+                return _context2.abrupt('return', res.status(500).json({
+                  success: false,
+                  errors: [{ msg: 'An error occured, while processing this request, try again in a moment' }]
+                }));
+
+              case 12:
+              case 'end':
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this, [[1, 9]]);
+      }));
+
+      function searchProfile(_x4, _x5, _x6) {
+        return _ref3.apply(this, arguments);
+      }
+
+      return searchProfile;
+    }()
+
+    /**
      * Create user account
      * @param {*} data
      * @returns {object} user ubject
@@ -88,44 +137,44 @@ var User = function () {
   }, {
     key: 'createUser',
     value: function () {
-      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(req, res, data) {
-        var queryText, values, _ref4, rows, response;
+      var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(req, res, data) {
+        var queryText, values, _ref6, rows, response;
 
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
-            switch (_context2.prev = _context2.next) {
+            switch (_context3.prev = _context3.next) {
               case 0:
-                console.log('DATA::', data);
+                // console.log('DATA::', data);
                 queryText = 'INSERT INTO users(id, email, \n      password, role, created_at, updated_at)\n      Values($1, $2, $3, $4, $5, $6)\n      returning *';
                 values = [_uuid2.default.v1(), data.email, data.hashPassword, data.role, new Date(), new Date()];
-                _context2.prev = 3;
-                _context2.next = 6;
+                _context3.prev = 2;
+                _context3.next = 5;
                 return this.users.query(queryText, values);
 
-              case 6:
-                _ref4 = _context2.sent;
-                rows = _ref4.rows;
+              case 5:
+                _ref6 = _context3.sent;
+                rows = _ref6.rows;
                 response = { success: true, rows: rows[0] };
-                return _context2.abrupt('return', response);
+                return _context3.abrupt('return', response);
 
-              case 12:
-                _context2.prev = 12;
-                _context2.t0 = _context2['catch'](3);
-                return _context2.abrupt('return', res.status(500).json({
+              case 11:
+                _context3.prev = 11;
+                _context3.t0 = _context3['catch'](2);
+                return _context3.abrupt('return', res.status(500).json({
                   success: false,
                   errors: [{ msg: 'An error occured' }]
                 }));
 
-              case 15:
+              case 14:
               case 'end':
-                return _context2.stop();
+                return _context3.stop();
             }
           }
-        }, _callee2, this, [[3, 12]]);
+        }, _callee3, this, [[2, 11]]);
       }));
 
-      function createUser(_x4, _x5, _x6) {
-        return _ref3.apply(this, arguments);
+      function createUser(_x7, _x8, _x9) {
+        return _ref5.apply(this, arguments);
       }
 
       return createUser;
@@ -140,46 +189,46 @@ var User = function () {
   }, {
     key: 'insertUserProfile',
     value: function () {
-      var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(req, res, data) {
-        var queryText, values, _ref6, rows, response;
+      var _ref7 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(req, res, data) {
+        var queryText, values, _ref8, rows, response;
 
-        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+        return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context4.prev = _context4.next) {
               case 0:
                 console.log('DARA', data);
-                queryText = 'INSERT INTO profiles(user_id, fullname, \n      gender, residence, country, state, tribe, heard_from, created_at, updated_at)\n      Values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)\n      returning *';
-                values = [data.userId, data.fullname, data.gender, data.residence, data.country, data.state, data.tribe, data.heardFrom, new Date(), new Date()];
-                _context3.prev = 3;
-                _context3.next = 6;
+                queryText = 'INSERT INTO profiles(user_id, fullname, \n      gender, birthday, residence, country, state, tribe, heard_from, created_at, updated_at)\n      Values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)\n      returning *';
+                values = [data.userId, data.fullname, data.gender, data.birthday, data.residence, data.country, data.state, data.tribe, data.heardFrom, new Date(), new Date()];
+                _context4.prev = 3;
+                _context4.next = 6;
                 return this.users.query(queryText, values);
 
               case 6:
-                _ref6 = _context3.sent;
-                rows = _ref6.rows;
+                _ref8 = _context4.sent;
+                rows = _ref8.rows;
                 response = { success: true, rows: rows[0] };
-                return _context3.abrupt('return', response);
+                return _context4.abrupt('return', response);
 
               case 12:
-                _context3.prev = 12;
-                _context3.t0 = _context3['catch'](3);
+                _context4.prev = 12;
+                _context4.t0 = _context4['catch'](3);
 
-                console.log(_context3.t0);
-                return _context3.abrupt('return', res.status(500).json({
+                console.log(_context4.t0);
+                return _context4.abrupt('return', res.status(500).json({
                   success: false,
                   errors: [{ msg: 'An error occured try again' }]
                 }));
 
               case 16:
               case 'end':
-                return _context3.stop();
+                return _context4.stop();
             }
           }
-        }, _callee3, this, [[3, 12]]);
+        }, _callee4, this, [[3, 12]]);
       }));
 
-      function insertUserProfile(_x7, _x8, _x9) {
-        return _ref5.apply(this, arguments);
+      function insertUserProfile(_x10, _x11, _x12) {
+        return _ref7.apply(this, arguments);
       }
 
       return insertUserProfile;
