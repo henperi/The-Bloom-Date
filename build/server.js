@@ -58,15 +58,16 @@ app.use((0, _expressValidator2.default)({
 }));
 
 var sgMail = require('@sendgrid/mail');
-
+// _Q!)7eM!gWjq
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 var msg = {
-  to: 'test@example.com',
-  from: 'test@example.com',
+  to: 'henry.izontimi@gmail.com',
+  from: 'test@thebloomdate.com',
   subject: 'Sending with SendGrid is Fun',
   text: 'and easy to do anywhere, even with Node.js',
   html: '<strong>and easy to do anywhere, even with Node.js</strong>'
 };
+console.log(msg);
 sgMail.send(msg).then(function () {
   console.log('success');
   return 'Email sent';

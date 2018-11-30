@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "npm test",
-    "build": "babel-node ./server --out-dir build",
-    "heroku-start": "npm run build && node ./build/server.js",
+    "build": "babel ./server --out-dir build",
+    "heroku-start": "node ./build/server.js",
     "start": "babel-watch ./server/server.js",
     "migrate-up": "node server/migration createAllTables",
     "migrate-down": "node server/migration dropAllTables"
